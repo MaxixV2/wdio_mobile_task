@@ -26,12 +26,46 @@ jobs:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           BROWSERSTACK_APP_ID: ${{ secrets.BROWSERSTACK_APP_ID }}
         run: npm run test
+      - name: Store Allure results
+        uses: actions/upload-artifact@v3
+        with: 
+          name: allure-results
+          path: 
+              allure-results
+          retention-days: 1
 
-      - name: Generate Report
-        run: npm run report:generate
-
-      - name: Deploy Results to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: allure-report/
+  generate-report:
+    runs-on: windows-latest
+    needs: build
+    name: Generate report
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Download artifacts
+          uses: actions/download-artifact@v3
+        - name: Install Allure command line
+          run:  npm install -g allure-commandline
+        - name: Generate report
+          run: allure generate allure-results -o allure-report
+        - name: Store generated report
+          uses: actions/upload-artifact@v3
+          with: 
+            name: allure-report
+            path: 
+                allure-report
+            retention-days: 1
+                
+  publish-report: 
+      runs-on: windows-latest
+      needs: generate-report
+      name: Report publication
+      steps:
+          - name: Download artifacts
+            uses: actions/download-artifact@v3
+          - name: Upload pages artifacts
+            uses: actions/upload-pages-artifact@v2
+            with: 
+              path: allure-report
+          - name: Deploy to github pages
+            id: deployment
+            uses: actions/deploy-pages@v2
