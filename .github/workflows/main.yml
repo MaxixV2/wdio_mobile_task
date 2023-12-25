@@ -1,4 +1,4 @@
-name: Test Cypress Real World App
+name: Test Mobile App
 
 on:
   push:
