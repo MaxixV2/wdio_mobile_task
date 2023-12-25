@@ -19,10 +19,8 @@ describe('Login', () => {
     it('Registration with valid credentials', async () => {
         const validEmail = Faker.generateValidEmail();
         const validPassword = Faker.generateRandomString(8);
-
         await LoginPage.signUpButton.click();
         await RegistrationPage.verify();
-
         await RegistrationPage.register(validEmail, validPassword, validPassword);
         await expect(RegistrationPage.registrationAlert).toHaveText(RegistrationPage.successfulLoginMessage);
     });
@@ -31,10 +29,8 @@ describe('Login', () => {
         const invalidEmail = Faker.generateInvalidEmail();
         const invalidPassword = Faker.generateRandomString(3);
         const invalidPasswordConfirm = Faker.generateRandomString(4);
-
         await LoginPage.signUpButton.click();
         await RegistrationPage.verify();
-
         await RegistrationPage.register(invalidEmail, invalidPassword, invalidPasswordConfirm);
         await expect(RegistrationPage.invalidEmailAlert).toHaveText(RegistrationPage.invalidEmailMessage);
         await expect(RegistrationPage.invalidPasswordAlert).toHaveText(RegistrationPage.invalidPasswordMessage);
@@ -44,7 +40,6 @@ describe('Login', () => {
     it('Login with valid credentials', async () => {
         const validEmail = Faker.generateValidEmail();
         const validPassword = Faker.generateRandomString(8);
-
         await LoginPage.login(validEmail, validPassword);
         await expect(LoginPage.loginAlert).toHaveText(LoginPage.successfulLoginMessage);
     });
@@ -52,7 +47,6 @@ describe('Login', () => {
     it('Login with invalid credentials', async () => {
         const invalidEmail = Faker.generateInvalidEmail();
         const invalidPassword = Faker.generateRandomString(3);
-
         await LoginPage.login(invalidEmail, invalidPassword);
         await expect(LoginPage.invalidEmailAlert).toHaveText(LoginPage.invalidEmailMessage);
         await expect(LoginPage.invalidPasswordAlert).toHaveText(LoginPage.invalidPasswordMessage);

@@ -15,7 +15,6 @@ describe('Drag', () => {
         await HomePage.verify();
         await HomePage.dragLink.click();
         await DragPage.verify();
-
         await DragPage.dragAndDrop('l1');
         await DragPage.dragAndDrop('c1');
         await DragPage.dragAndDrop('r1');
