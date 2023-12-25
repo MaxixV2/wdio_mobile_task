@@ -2,7 +2,7 @@ name: Test Mobile App
 
 on:
   push:
-    branches: [origin]
+    branches: [master]
 
 jobs:
   build:
